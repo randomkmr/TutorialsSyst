@@ -4,8 +4,10 @@ const controller = require('../controllers/controller');
 
 // Auth routes
 router.post('/login', controller.login);
+router.get('/login', controller.loginGet);
+router.get('/register', controller.registerGet);
 router.post('/register', controller.register);
-router.post('/users', controller.countUsers);                           // (paduoda skaičių vartotojų - t.y. COUNT users įrašus)
+router.get('/users', controller.countUsers);                           
 
 module.exports = router;
 

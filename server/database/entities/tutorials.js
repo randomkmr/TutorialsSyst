@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-const {mysqlConfig, secretKey} = require('../../../config');
+const {mysqlConfig} = require('../../../config');
 
 //All tutorials
 exports.allTutorials = async () => {
@@ -7,8 +7,11 @@ exports.allTutorials = async () => {
     const con = await mysql.createConnection(mysqlConfig);
     const [result] = await con.execute(
         `
-        SELECT *
-        FROM tutorials        
+        SELECT id, user_id,title,content,
+        CASE 
+        WHEN private ='0' THEN 'Public' 
+        WHEN private ='1' THEN 'Private'
+        END AS private FROM tutorials      
         `    
     );
     await con.end();
@@ -17,13 +20,16 @@ exports.allTutorials = async () => {
 
 //Public tutorials
  exports.publicTutorials = async () => {
-    console.log('Only Public Tutorials');
+    //console.log('Only Public Tutorials');
     const con = await mysql.createConnection(mysqlConfig);
     const [result] = await con.execute(
         `
-        SELECT *
-        FROM tutorials
-        WHERE private = 0   
+        SELECT id, user_id,title,content,
+        CASE 
+        WHEN private ='0' THEN 'Public' 
+        WHEN private ='1' THEN 'Private'
+        END AS private FROM tutorials
+        WHERE private = 0
         `    
     );
     await con.end();
@@ -31,8 +37,7 @@ exports.allTutorials = async () => {
 }; 
 
 // User Tutorials
-exports.viewUserTutorials = async (id) => {
-    
+exports.viewUserTutorials = async (id) => {    
     console.log('Only User Tutorials');
     const con = await mysql.createConnection(mysqlConfig);
     const [result] = await con.execute(
@@ -48,10 +53,10 @@ exports.viewUserTutorials = async (id) => {
 }; 
 
 // Create User Tutorial
-exports.createUserTutorial = async (email,body) => {
+exports.createUserTutorial = async (email,title, content, private) => {
     //console.log('Create User Tutorial');
     const id = await emailToId(email);
-    const {title, content, private} = body;
+    //const {title, content, private} = body;
     const con = await mysql.createConnection(mysqlConfig);
     const [result] = await con.execute(
         `
@@ -69,4 +74,24 @@ const emailToId= async (email) => {
     const [result] = await con.execute(`SELECT id FROM users WHERE email = '${email}'`);
     await con.end();
     return Object.values(result[0])[0]
+}
+
+exports.getUserId= async (email) => {
+    const con = await mysql.createConnection(mysqlConfig);
+    const [result] = await con.execute(`SELECT id FROM users WHERE email = '${email}'`);
+    await con.end();
+    return Object.values(result[0])[0]
+}
+
+// Open Tutorial
+exports.openTutorial = async (id) => {
+    const con = await mysql.createConnection(mysqlConfig);
+    const [result] = await con.execute(`SELECT * FROM tutorials WHERE id =${id}`);
+    await con.end()
+    if (result[0].private == 0) {
+        result[0].private = 'Public';
+    } else {
+    result[0].private = 'Private'  
+    }    
+    return result
 }

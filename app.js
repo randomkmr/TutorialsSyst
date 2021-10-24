@@ -5,6 +5,7 @@ const { port } = require('./config');
 const routesAuth = require('./server/routes/users.js');
 const routesTutorials = require('./server/routes/tutorials');
 const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.engine('hbs', exphbs({extname: '.hbs'}));
 app.set('view engine', 'hbs');
 
 app.use(express.json(), cors(), cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/', routesAuth);
 app.use('/', routesTutorials);

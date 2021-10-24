@@ -1,0 +1,22 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/tutorials">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Tutorial</li>
+
+    <li class="breadcrumb-item active" aria-current="page">{{data.[0].id}}</li>
+
+  </ol>
+</nav>
+
+<div class="view-tutorial" p-5>
+    {{#each data}}
+    <div class="row mb-5">
+        <dvi class="col text-center">
+            <h3>{{this.title}} </h3>
+            <h6><i>{{this.private}} Tutorial</i></h6>
+            <p>{{this.content}}</p>
+        <div>
+
+    
+    {{/each}}
+</div>

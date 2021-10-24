@@ -65,8 +65,7 @@ exports.countUsers = async () => {
         `    
     );
     await con.end();
-    resultCount = Object.values(result[0])[0];  
-    console.log('Number of users: ', resultCount);  
+    resultCount = Object.values(result[0])[0]; 
     return resultCount
 }
 
