@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-65 text-center"><h5>Public Tutorials</h5></div>
+    <i class="d-flex">Number of users: {{userNumber}}</i>   
+</div>
+
+<table class="table table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Tutorial</th>
+      <th scope="col"><center>Category</center></th>
+
+      <th scope="col" class="text-center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {{#each rows}}  
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.title}}</td>
+      <td><center><i>{{this.private}}</i></center></td>
+
+      <td class="text-center">
+          <a href="/tutorials/{{this.id}}" type="button" class="btn btn-light btn-small "><i class="bi bi-eye"> View Tutorial</i></a>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
